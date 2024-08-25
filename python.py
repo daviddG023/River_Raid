@@ -49,7 +49,7 @@ side_target_speed = 3
 side_targets = []
 
 # Score, fuel, and lives
-score = 0
+score = 800
 fuel_level = 100
 lives = 3
 
@@ -61,7 +61,7 @@ game_over_font = pygame.font.Font(None, 72)
 player_img = pygame.Surface((player_width, player_height))
 player_img.fill(GREEN)
 player_img = pygame.transform.scale(pygame.image.load("assets/plane.png"), (65, 65))
- 
+
 
 # Load enemy image
 enemy_img = pygame.Surface((enemy_width, enemy_height))
@@ -77,7 +77,7 @@ fuel_img = pygame.transform.scale(pygame.image.load("assets/fuel.png"), (50, 100
 
 # Sideways target class
 # Load the side target image
-side_target_img = pygame.transform.scale(pygame.image.load("assets/plane2.png"), (50, 30))
+
 
 class SideTarget:
     def __init__(self):
@@ -95,6 +95,10 @@ class SideTarget:
             self.direction *= -1
 
     def draw(self, screen):
+        if(self.direction == 1):
+            side_target_img = pygame.transform.scale(pygame.image.load("assets/plane2.png"), (70, 60))
+        else:    
+            side_target_img = pygame.transform.scale(pygame.image.load("assets/plane3.png"), (70, 60))
         screen.blit(side_target_img, (self.rect.x, self.rect.y))
 
 
@@ -116,13 +120,24 @@ class Bridge:
         self.rect = pygame.Rect(0, 0, WIDTH, 20)
         self.y = 0
         self.speed = 5
+        self.is_hit = False  # Flag to track if the bridge has been hit
+
+        # Load both images
+        self.intact_img = pygame.transform.scale(pygame.image.load("assets/damageB.png"), (WIDTH, 70))
+        self.damaged_img = pygame.transform.scale(pygame.image.load("assets/damage.png"), (WIDTH, 70))
 
     def move(self):
         self.y += self.speed
         self.rect.y = self.y
 
     def draw(self, screen):
-        pygame.draw.rect(screen, BROWN, self.rect)
+        # Draw the appropriate image based on whether the bridge has been hit
+        if self.is_hit:
+            screen.blit(self.damaged_img, self.rect.topleft)
+        else:
+            screen.blit(self.intact_img, self.rect.topleft)
+
+
 
 # Game Over screen
 def game_over_screen():
@@ -146,10 +161,12 @@ next_bridge_score = 1000  # Next score at which to spawn a bridge
 # Main game loop
 running = True
 bullets = []
+# Load river background image
+river_img = pygame.transform.scale(pygame.image.load("assets/river.png"), (WIDTH, HEIGHT))
 
-while running:
-    screen.fill(WHITE)
-
+# In the main loop, draw the background first
+while running: # Main game loop
+    screen.blit(river_img, (0, 0))  # Draw the river background
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -214,9 +231,10 @@ while running:
         # Check for collision with bridges
         for bridge in bridges[:]:
             if bullet.rect.colliderect(bridge.rect):
-                bridges.remove(bridge)  # Remove the bridge if hit
+                bridge.is_hit = True  # Mark the bridge as hit to change the image to bridgeb.png
                 if bullet in bullets:
                     bullets.remove(bullet)
+
 
         # Check for collision with side targets
         for target in side_targets[:]:
@@ -240,7 +258,8 @@ while running:
         bridge.move()
         bridge.draw(screen)
         if pygame.Rect(player_x, player_y, player_width, player_height).colliderect(bridge.rect):
-            running = False  # End the game if the player crashes into the bridge
+            if(not bridge.is_hit):
+                running = False  # End the game if the player crashes into the bridge
 
     # Move enemies and fuels, check collisions with player
     for enemy in enemies[:]:
