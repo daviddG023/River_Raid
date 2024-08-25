@@ -61,7 +61,7 @@ game_over_font = pygame.font.Font(None, 72)
 player_img = pygame.Surface((player_width, player_height))
 player_img.fill(GREEN)
 player_img = pygame.transform.scale(pygame.image.load("assets/plane.png"), (65, 65))
-
+ 
 
 # Load enemy image
 enemy_img = pygame.Surface((enemy_width, enemy_height))
