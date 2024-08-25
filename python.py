@@ -159,7 +159,7 @@ while running:
                 bullet_x = player_x + player_width // 2 - 2.5
                 bullet_y = player_y
                 bullets.append(Bullet(bullet_x, bullet_y))
- #draw the player
+
     # Player movement with added up and down controls
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and player_x > 0:
