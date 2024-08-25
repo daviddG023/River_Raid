@@ -165,7 +165,7 @@ bullets = []
 river_img = pygame.transform.scale(pygame.image.load("assets/river.png"), (WIDTH, HEIGHT))
 
 # In the main loop, draw the background first
-while running:
+while running: # Main game loop
     screen.blit(river_img, (0, 0))  # Draw the river background
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
