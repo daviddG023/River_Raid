@@ -1,5 +1,5 @@
 import pygame
-import random
+import random # For random enemy and fuel spawn
 
 # Initialize Pygame
 pygame.init()
