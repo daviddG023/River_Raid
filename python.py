@@ -5,7 +5,7 @@ import random # For random enemy and fuel spawn
 pygame.init()
 
 # Screen dimensions
-WIDTH, HEIGHT = 400, 600
+WIDTH, HEIGHT = 1000, 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("River Raid")
 
